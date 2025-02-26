@@ -12,6 +12,9 @@ set -u # or set -o nounset
 #
 # Build Docker images.
 #
+docker build -t $CONTAINER_REGISTRY/advertise:1 --file ../../advertise/Dockerfile-prod ../../advertise
+docker push $CONTAINER_REGISTRY/advertise:1
+
 docker build -t $CONTAINER_REGISTRY/metadata:1 --file ../../metadata/Dockerfile-prod ../../metadata
 docker push $CONTAINER_REGISTRY/metadata:1
 
@@ -40,6 +43,7 @@ docker push $CONTAINER_REGISTRY/gateway:1
 #
 kubectl apply -f rabbit.yaml
 kubectl apply -f mongodb.yaml 
+envsubst < advertise.yaml | kubectl apply -f -
 envsubst < metadata.yaml | kubectl apply -f -
 envsubst < history.yaml | kubectl apply -f -
 envsubst < mock-storage.yaml | kubectl apply -f -

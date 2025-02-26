@@ -185,3 +185,26 @@ services:
       - db
       - rabbit
     restart: "no"
+
+  advertise:
+    image: advertise
+    build: 
+      context: ./advertise
+      dockerfile: Dockerfile-dev
+    container_name: advertise
+    volumes:
+      - /tmp/advertise/npm-cache:/root/.npm:z
+      - ./advertise/src:/usr/src/app/src:z
+      - ./advertise/uploads:/usr/src/app/uploads:z
+    ports:
+     - "4007:80"
+    environment:
+      - PORT=80
+      - DBHOST=mongodb://db:27017
+      - DBNAME=advertisements
+      - RABBIT=amqp://test:test@rabbit:5672
+      - NODE_ENV=development
+    depends_on:
+      - db
+      - rabbit
+    restart: "no"

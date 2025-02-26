@@ -101,6 +101,11 @@ async function main() {
         response.data.pipe(res);
     });
 
+    app.get("/advertise", async (req, res) => {
+        const response = await axios.get("http://advertise/images"); // Forwards the request to the advertise microservice.
+        res.render("advertise", { images: response.data.images });
+    });
+
     app.listen(PORT, () => {
         console.log("Microservice online.");
     });
